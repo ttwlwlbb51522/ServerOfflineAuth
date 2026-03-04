@@ -11,6 +11,7 @@ import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraft.server.MinecraftServer;
 
 @Mod.EventBusSubscriber(modid = ServerOfflineAuth.MODID)
 public class AuthEvents {
@@ -18,6 +19,15 @@ public class AuthEvents {
     @SubscribeEvent
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
+            MinecraftServer server = player.getServer();
+
+            if (server != null && server.isSingleplayer()) {
+                LoginManager.recordJoinTime(player);
+                LoginManager.setAuthenticated(player, true);
+                player.sendSystemMessage(Component.literal("单人模式，已自动登录").withStyle(ChatFormatting.GREEN));
+                return;
+            }
+
             LoginManager.recordJoinTime(player);
             LoginManager.backupPlayerState(player);
             player.setGameMode(GameType.ADVENTURE);
