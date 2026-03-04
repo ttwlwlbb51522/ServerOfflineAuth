@@ -22,7 +22,7 @@ public class LoginManager {
     public static void removePlayer(ServerPlayer player) {
         loginStatus.remove(player.getUUID());
         joinTime.remove(player.getUUID());
-        originalPlayerState.remove(player.getUUID());
+        // 注意：不要清除 originalPlayerState！让备份保留，直到玩家登录成功。
     }
 
     public static void recordJoinTime(ServerPlayer player) {
@@ -33,16 +33,16 @@ public class LoginManager {
         return joinTime.getOrDefault(player.getUUID(), 0L);
     }
 
-    // 备份玩家状态（登录前）
+    // 备份玩家状态：仅在首次进入时备份，避免覆盖原始模式
     public static void backupPlayerState(ServerPlayer player) {
-        originalPlayerState.put(player.getUUID(), new GameModeSnapshot(
+        originalPlayerState.putIfAbsent(player.getUUID(), new GameModeSnapshot(
                 player.gameMode.getGameModeForPlayer(),
                 player.getAbilities().mayfly,
                 player.getAbilities().flying
         ));
     }
 
-    // 恢复玩家状态（登录后）
+    // 恢复玩家状态（登录成功后调用）
     public static void restorePlayerState(ServerPlayer player) {
         GameModeSnapshot snapshot = originalPlayerState.remove(player.getUUID());
         if (snapshot != null) {

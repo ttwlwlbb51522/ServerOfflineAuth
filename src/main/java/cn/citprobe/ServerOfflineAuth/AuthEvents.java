@@ -19,8 +19,6 @@ public class AuthEvents {
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             LoginManager.recordJoinTime(player);
-
-            // 备份玩家原始游戏模式，然后强制设为冒险模式
             LoginManager.backupPlayerState(player);
             player.setGameMode(GameType.ADVENTURE);
 
