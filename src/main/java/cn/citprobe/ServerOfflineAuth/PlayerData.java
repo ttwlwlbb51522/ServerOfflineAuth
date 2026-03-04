@@ -10,14 +10,13 @@ public class PlayerData {
     private String hashedPassword;
     private long registeredTime;
     private String lastIp;
-    private String lastDimension;   // 例如 "minecraft:overworld"
+    private String lastDimension;
     private double lastX, lastY, lastZ;
     private float lastYRot, lastXRot;
     private int gameMode;
     private boolean mayFly;
     private boolean flying;
 
-    // 必须有无参构造（JSON 反序列化）
     public PlayerData() {}
 
     public PlayerData(UUID uuid, String hashedPassword, long registeredTime, String lastIp) {

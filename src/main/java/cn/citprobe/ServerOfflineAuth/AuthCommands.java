@@ -38,14 +38,14 @@ public class AuthCommands {
                                         String confirm = StringArgumentType.getString(context, "confirm");
 
                                         if (!pwd.equals(confirm)) {
-                                            context.getSource().sendFailure(Component.literal("两次输入的密码不一致"));
+                                            context.getSource().sendFailure(Component.translatable("commands.register.password_mismatch"));
                                             return 0;
                                         }
 
                                         LOGGER.info("玩家 {} 尝试注册，密码一致", player.getName().getString());
 
                                         if (StorageManager.hasPlayerData(player.getUUID())) {
-                                            context.getSource().sendFailure(Component.literal("你已经注册过了，请使用 /login"));
+                                            context.getSource().sendFailure(Component.translatable("commands.register.already_registered"));
                                             return 0;
                                         }
 
@@ -59,11 +59,11 @@ public class AuthCommands {
                                         LoginManager.restorePlayerState(player);
                                         teleportToLastLocation(player, data);
 
-                                        context.getSource().sendSuccess(() -> Component.literal("注册成功，已自动登录"), true);
+                                        context.getSource().sendSuccess(() -> Component.translatable("commands.register.success"), true);
                                         return 1;
                                     } catch (Exception e) {
                                         LOGGER.error("注册命令执行过程中发生异常", e);
-                                        context.getSource().sendFailure(Component.literal("注册失败，请查看服务器日志"));
+                                        context.getSource().sendFailure(Component.translatable("commands.register.failed"));
                                         return 0;
                                     }
                                 }))));
@@ -79,32 +79,31 @@ public class AuthCommands {
 
                                 PlayerData data = StorageManager.getPlayerData(player.getUUID());
                                 if (data == null) {
-                                    context.getSource().sendFailure(Component.literal("你还没有注册，请先使用 /register"));
+                                    context.getSource().sendFailure(Component.translatable("commands.login.not_registered"));
                                     return 0;
                                 }
 
                                 if (LoginManager.isAuthenticated(player)) {
-                                    context.getSource().sendFailure(Component.literal("你已经登录了"));
+                                    context.getSource().sendFailure(Component.translatable("commands.login.already_logged_in"));
                                     return 0;
                                 }
 
                                 if (PasswordUtils.checkPassword(pwd, data.getHashedPassword())) {
-                                    // 更新玩家名称
                                     data.setPlayerName(player.getName().getString());
                                     StorageManager.putPlayerData(player.getUUID(), data);
 
                                     LoginManager.setAuthenticated(player, true);
                                     LoginManager.restorePlayerState(player);
                                     teleportToLastLocation(player, data);
-                                    context.getSource().sendSuccess(() -> Component.literal("登录成功"), true);
+                                    context.getSource().sendSuccess(() -> Component.translatable("commands.login.success"), true);
                                     return 1;
                                 } else {
-                                    context.getSource().sendFailure(Component.literal("密码错误"));
+                                    context.getSource().sendFailure(Component.translatable("commands.login.incorrect_password"));
                                     return 0;
                                 }
                             } catch (Exception e) {
                                 LOGGER.error("登录命令执行过程中发生异常", e);
-                                context.getSource().sendFailure(Component.literal("登录失败，请查看服务器日志"));
+                                context.getSource().sendFailure(Component.translatable("commands.login.failed"));
                                 return 0;
                             }
                         })));
@@ -116,18 +115,17 @@ public class AuthCommands {
                     try {
                         ServerPlayer player = context.getSource().getPlayerOrException();
                         if (!LoginManager.isAuthenticated(player)) {
-                            context.getSource().sendFailure(Component.literal("你还未登录"));
+                            context.getSource().sendFailure(Component.translatable("commands.logout.not_logged_in"));
                             return 0;
                         }
                         LoginManager.setAuthenticated(player, false);
-                        // 登出时备份状态并设为冒险模式
                         LoginManager.backupPlayerState(player);
                         player.setGameMode(GameType.ADVENTURE);
-                        context.getSource().sendSuccess(() -> Component.literal("已登出"), true);
+                        context.getSource().sendSuccess(() -> Component.translatable("commands.logout.success"), true);
                         return 1;
                     } catch (Exception e) {
                         LOGGER.error("登出命令执行过程中发生异常", e);
-                        context.getSource().sendFailure(Component.literal("登出失败，请查看服务器日志"));
+                        context.getSource().sendFailure(Component.translatable("commands.logout.failed"));
                         return 0;
                     }
                 }));
@@ -145,23 +143,23 @@ public class AuthCommands {
 
                                         PlayerData data = StorageManager.getPlayerData(player.getUUID());
                                         if (data == null) {
-                                            context.getSource().sendFailure(Component.literal("你还没有注册"));
+                                            context.getSource().sendFailure(Component.translatable("commands.changepassword.not_registered"));
                                             return 0;
                                         }
 
                                         if (!PasswordUtils.checkPassword(oldPwd, data.getHashedPassword())) {
-                                            context.getSource().sendFailure(Component.literal("旧密码错误"));
+                                            context.getSource().sendFailure(Component.translatable("commands.changepassword.incorrect_old"));
                                             return 0;
                                         }
 
                                         String newHashed = PasswordUtils.hashPassword(newPwd);
                                         data.setHashedPassword(newHashed);
                                         StorageManager.putPlayerData(player.getUUID(), data);
-                                        context.getSource().sendSuccess(() -> Component.literal("密码已修改"), true);
+                                        context.getSource().sendSuccess(() -> Component.translatable("commands.changepassword.success"), true);
                                         return 1;
                                     } catch (Exception e) {
                                         LOGGER.error("修改密码命令执行过程中发生异常", e);
-                                        context.getSource().sendFailure(Component.literal("修改密码失败，请查看服务器日志"));
+                                        context.getSource().sendFailure(Component.translatable("commands.changepassword.failed"));
                                         return 0;
                                     }
                                 }))));
@@ -170,21 +168,20 @@ public class AuthCommands {
     private static void registerAdminCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("serverofflineauth")
                 .then(Commands.literal("admin")
-                        .requires(source -> source.hasPermission(2)) // 需要 OP 权限
+                        .requires(source -> source.hasPermission(2))
                         .then(Commands.literal("login")
                                 .then(Commands.argument("target", EntityArgument.player())
                                         .executes(context -> {
                                             try {
                                                 ServerPlayer target = EntityArgument.getPlayer(context, "target");
                                                 if (target == null) {
-                                                    context.getSource().sendFailure(Component.literal("目标玩家不在线"));
+                                                    context.getSource().sendFailure(Component.translatable("commands.admin.login.target_not_found"));
                                                     return 0;
                                                 }
                                                 if (LoginManager.isAuthenticated(target)) {
-                                                    context.getSource().sendFailure(Component.literal("目标玩家已经登录"));
+                                                    context.getSource().sendFailure(Component.translatable("commands.admin.login.already_logged_in"));
                                                     return 0;
                                                 }
-                                                // 强制登录
                                                 PlayerData data = StorageManager.getPlayerData(target.getUUID());
                                                 if (data != null) {
                                                     data.setPlayerName(target.getName().getString());
@@ -193,11 +190,11 @@ public class AuthCommands {
                                                 LoginManager.setAuthenticated(target, true);
                                                 LoginManager.restorePlayerState(target);
                                                 context.getSource().sendSuccess(() ->
-                                                        Component.literal("已强制登录玩家 " + target.getName().getString()), true);
+                                                        Component.translatable("commands.admin.login.success", target.getName().getString()), true);
                                                 return 1;
                                             } catch (Exception e) {
                                                 LOGGER.error("强制登录命令执行过程中发生异常", e);
-                                                context.getSource().sendFailure(Component.literal("强制登录失败，请查看服务器日志"));
+                                                context.getSource().sendFailure(Component.translatable("commands.admin.login.failed"));
                                                 return 0;
                                             }
                                         })))
@@ -207,23 +204,22 @@ public class AuthCommands {
                                             try {
                                                 ServerPlayer target = EntityArgument.getPlayer(context, "target");
                                                 if (target == null) {
-                                                    context.getSource().sendFailure(Component.literal("目标玩家不在线"));
+                                                    context.getSource().sendFailure(Component.translatable("commands.admin.logout.target_not_found"));
                                                     return 0;
                                                 }
                                                 if (!LoginManager.isAuthenticated(target)) {
-                                                    context.getSource().sendFailure(Component.literal("目标玩家尚未登录"));
+                                                    context.getSource().sendFailure(Component.translatable("commands.admin.logout.not_logged_in"));
                                                     return 0;
                                                 }
-                                                // 强制登出
                                                 LoginManager.backupPlayerState(target);
                                                 target.setGameMode(GameType.ADVENTURE);
                                                 LoginManager.setAuthenticated(target, false);
                                                 context.getSource().sendSuccess(() ->
-                                                        Component.literal("已强制登出玩家 " + target.getName().getString()), true);
+                                                        Component.translatable("commands.admin.logout.success", target.getName().getString()), true);
                                                 return 1;
                                             } catch (Exception e) {
                                                 LOGGER.error("强制登出命令执行过程中发生异常", e);
-                                                context.getSource().sendFailure(Component.literal("强制登出失败，请查看服务器日志"));
+                                                context.getSource().sendFailure(Component.translatable("commands.admin.logout.failed"));
                                                 return 0;
                                             }
                                         })))));

@@ -5,9 +5,9 @@ public class PasswordUtils {
         try {
             int factor = Config.SERVER.passwordHashWorkFactor.get();
             return PasswordHash.hashpw(plainPassword, PasswordHash.gensalt(factor));
-        } catch (Throwable t) {  // 捕获所有异常和错误
+        } catch (Throwable t) {
             ServerOfflineAuth.LOGGER.error("密码哈希失败", t);
-            throw new RuntimeException("密码哈希失败", t); // 包装为运行时异常，便于上层处理
+            throw new RuntimeException("密码哈希失败", t);
         }
     }
 

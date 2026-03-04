@@ -1,0 +1,42 @@
+{
+  "auth.message.join.need_register": "请使用 /register <密码> <确认密码> 注册",
+  "auth.message.join.need_login": "请使用 /login <密码> 登录",
+  "auth.message.login_timeout": "登录超时，请重新加入",
+  "auth.message.singleplayer_auto_login": "单人模式，已自动登录",
+
+  "commands.register.password_mismatch": "两次输入的密码不一致",
+  "commands.register.already_registered": "你已经注册过了，请使用 /login",
+  "commands.register.success": "注册成功，已自动登录",
+  "commands.register.failed": "注册失败，请查看服务器日志",
+
+  "commands.login.not_registered": "你还没有注册，请先使用 /register",
+  "commands.login.already_logged_in": "你已经登录了",
+  "commands.login.success": "登录成功",
+  "commands.login.incorrect_password": "密码错误",
+  "commands.login.failed": "登录失败，请查看服务器日志",
+
+  "commands.logout.not_logged_in": "你还未登录",
+  "commands.logout.success": "已登出",
+  "commands.logout.failed": "登出失败，请查看服务器日志",
+
+  "commands.changepassword.not_registered": "你还没有注册",
+  "commands.changepassword.incorrect_old": "旧密码错误",
+  "commands.changepassword.success": "密码已修改",
+  "commands.changepassword.failed": "修改密码失败，请查看服务器日志",
+
+  "commands.admin.login.target_not_found": "目标玩家不在线",
+  "commands.admin.login.already_logged_in": "目标玩家已经登录",
+  "commands.admin.login.success": "已强制登录玩家 %s",
+  "commands.admin.login.failed": "强制登录失败，请查看服务器日志",
+
+  "commands.admin.logout.target_not_found": "目标玩家不在线",
+  "commands.admin.logout.not_logged_in": "目标玩家尚未登录",
+  "commands.admin.logout.success": "已强制登出玩家 %s",
+  "commands.admin.logout.failed": "强制登出失败，请查看服务器日志",
+
+  "commands.migrate.invalid_target": "目标存储类型必须是 json 或 mysql",
+  "commands.migrate.success": "数据迁移到 %s 成功！请修改配置文件中的 storageType 并重启服务器以切换存储。",
+  "commands.migrate.failed": "数据迁移失败，请查看服务器日志",
+
+  "chat.cannot_speak": "请先登录！"
+}

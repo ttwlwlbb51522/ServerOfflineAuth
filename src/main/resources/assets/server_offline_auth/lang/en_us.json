@@ -1,0 +1,42 @@
+{
+  "auth.message.join.need_register": "Please use /register <password> <confirm> to register",
+  "auth.message.join.need_login": "Please use /login <password> to login",
+  "auth.message.login_timeout": "Login timeout, please rejoin",
+  "auth.message.singleplayer_auto_login": "Singleplayer mode, automatically logged in",
+
+  "commands.register.password_mismatch": "Passwords do not match",
+  "commands.register.already_registered": "You are already registered, please use /login",
+  "commands.register.success": "Registration successful, automatically logged in",
+  "commands.register.failed": "Registration failed, please check server logs",
+
+  "commands.login.not_registered": "You are not registered, please use /register first",
+  "commands.login.already_logged_in": "You are already logged in",
+  "commands.login.success": "Login successful",
+  "commands.login.incorrect_password": "Incorrect password",
+  "commands.login.failed": "Login failed, please check server logs",
+
+  "commands.logout.not_logged_in": "You are not logged in",
+  "commands.logout.success": "Logged out",
+  "commands.logout.failed": "Logout failed, please check server logs",
+
+  "commands.changepassword.not_registered": "You are not registered",
+  "commands.changepassword.incorrect_old": "Incorrect old password",
+  "commands.changepassword.success": "Password changed",
+  "commands.changepassword.failed": "Failed to change password, please check server logs",
+
+  "commands.admin.login.target_not_found": "Target player not online",
+  "commands.admin.login.already_logged_in": "Target player is already logged in",
+  "commands.admin.login.success": "Force logged in player %s",
+  "commands.admin.login.failed": "Force login failed, please check server logs",
+
+  "commands.admin.logout.target_not_found": "Target player not online",
+  "commands.admin.logout.not_logged_in": "Target player is not logged in",
+  "commands.admin.logout.success": "Force logged out player %s",
+  "commands.admin.logout.failed": "Force logout failed, please check server logs",
+
+  "commands.migrate.invalid_target": "Target storage type must be 'json' or 'mysql'",
+  "commands.migrate.success": "Data migration to %s successful! Please modify storageType in config and restart server to switch storage.",
+  "commands.migrate.failed": "Data migration failed, please check server logs",
+
+  "chat.cannot_speak": "Please log in first!"
+}
