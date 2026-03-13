@@ -11,7 +11,6 @@ Provides password authentication for offline players on the server.
 - Built-in encrypted data storage
 - Json and MySQL support
 - Token verification password-free login
-- The server-side tokens are stored in the `server_offline_auth_tokens.json` file under the `config/` folder.
 
 ### Configuration
 
@@ -59,6 +58,7 @@ When ServerOfflineAuth is first started, it creates the `server_offline_auth-com
 ```
 - If the data storage mode is JSON, a file named `server_offline_auth_data.json` will be created in the server root directory to store player data.
 - If the data storage mode is MySQL, you need to ensure that the MySQL server is properly configured and running, and that the provided connection information is correct.
+- - The server-side tokens are stored in the `server_offline_auth_tokens.json` file under the `config/` folder.
 
 ### Player Commands
 
