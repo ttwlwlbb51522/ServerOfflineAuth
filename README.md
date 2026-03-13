@@ -11,8 +11,7 @@ Provides password authentication for offline players on the server.
 - Built-in encrypted data storage
 - Json and MySQL support
 - Token verification password-free login
-
-
+- The server-side tokens are stored in the `server_offline_auth_tokens.json` file under the `config/` folder.
 
 ### Configuration
 
