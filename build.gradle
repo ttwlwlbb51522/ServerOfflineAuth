@@ -116,11 +116,11 @@ repositories {
     flatDir {
         dir 'libs'
     }
-    /*maven {
+    maven {
         name = "Aliyun"
         url = "https://maven.aliyun.com/repository/public"
     }
-    // 默认的 Maven Central（作为备选）
+    /*
     mavenCentral()*/
     // Put repositories for dependencies here
     // ForgeGradle automatically adds the Forge maven and Maven Central for you

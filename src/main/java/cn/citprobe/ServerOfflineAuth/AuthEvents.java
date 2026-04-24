@@ -45,19 +45,23 @@ public class AuthEvents {
     public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             if (LoginManager.isAuthenticated(player)) {
-                PlayerData data = StorageManager.getPlayerData(player.getUUID());
-                if (data != null) {
-                    data.setPlayerName(player.getName().getString());
-                    data.setLastDimension(player.level().dimension().location().toString());
-                    data.setLastX(player.getX());
-                    data.setLastY(player.getY());
-                    data.setLastZ(player.getZ());
-                    data.setLastYRot(player.getYRot());
-                    data.setLastXRot(player.getXRot());
-                    data.setGameMode(player.gameMode.getGameModeForPlayer().getId());
-                    data.setMayFly(player.getAbilities().mayfly);
-                    data.setFlying(player.getAbilities().flying);
-                    StorageManager.putPlayerData(player.getUUID(), data);
+                try {
+                    PlayerData data = StorageManager.getPlayerData(player.getUUID());
+                    if (data != null) {
+                        data.setPlayerName(player.getName().getString());
+                        data.setLastDimension(player.level().dimension().location().toString());
+                        data.setLastX(player.getX());
+                        data.setLastY(player.getY());
+                        data.setLastZ(player.getZ());
+                        data.setLastYRot(player.getYRot());
+                        data.setLastXRot(player.getXRot());
+                        data.setGameMode(player.gameMode.getGameModeForPlayer().getId());
+                        data.setMayFly(player.getAbilities().mayfly);
+                        data.setFlying(player.getAbilities().flying);
+                        StorageManager.putPlayerData(player.getUUID(), data);
+                    }
+                } catch (Exception e) {
+                    ServerOfflineAuth.LOGGER.error("保存玩家 {} 数据时发生异常", player.getName().getString(), e);
                 }
             }
             LoginManager.removePlayer(player);
